@@ -1,0 +1,34 @@
+10/01/2022 reimplementing nscl
+---- code set-up and installations ------------
+- cloned Jacinle from git as shown in README 
+- export ..Jacinle/bin:$PATH
+- created venv called nscl instead of conda env
+- pip3 install torch torchvision 
+- pip3 install -r requirements.txt
+-----------------------------------------------
+------ dataset preparation --------------------
+- download all imgs from official website
+- put them under images/ folder
+- renamed scenes.json files from clevr website to scenes-raw.json
+- downloaded annotated scenes with bounding boxes train/scenes.json and val/scenes.json 
+- downloaded vocab.json into train/ and val/ both
+----------------------------------------------
+--------- training --------------------------
+- they only prove training for visual modules (semantic parser is pretrained using program annotations)
+- jac-crun scripts/trainval.py --desc experiments/clevr/desc_nscl_derender.py --training-target derender --curriculum all --dataset clevr --data-dir clevr/train --batch-size 32 --epoch 100 --validation-interval 5 --save-interval 5 --data-split 0.95
+- ModuleNotFoundError: No module named 'yaml' so installing pip3 install pyyaml;
+- [undo 1] /Users/aishniparab/Documents/program_universe/NSCL/Jacinle/bin/jac-run: line 10: exec: --: invalid option; so i manually commented out jac-run bash script and replaced "@" with "scripts/trainval.py" inside if and at the end;
+- ModuleNotFoundError: No module named 'tqdm'; pip3 install tqdm;
+- ModuleNotFoundError: No module named 'matplotlib'; pip3 install matplotlib;
+- clang-13: error: no such file or directory: 'pycocotools/_mask.c'; clang-13: error: no input files; pip3 install Cython;
+- [see undo 1] instead of jac-crun used jac-run; AssertionError: No GPU device available; run command with --use-gpu false
+- ModuleNotFoundError: No module named 'nltk'; pip3 install nltk;
+- now log matches http://nscl.csail.mit.edu/data/code-data/clevr/log/run-2019-04-07-16-25-45.log
+- LookupError for nltk, no package named 'punkt'. Ran python shell, import nltk, nltk.download('punkt'), from nltk import sent_tokenize;
+- Building the data loader. Curriculum = 3/4, length = 1930.; in dataloader.py AttributeError: Can't pickle local object 'NSCLDatsetFilterableView.filter_scene_size.<locals>.filt'; pass in args --data-workers 
+- RuntimeError: Ninja is required to load C++ extensions; pip3 install Ninja;
+- OSError: CUDA_HOME environment variable is not set. Please set it to your CUDA install root; pytorch pip installation with cuda says: MacOS Binaries dont support CUDA, install from source if CUDA is needed; commented out 180, 185 .cuda();
+- didn't work shutting down 10pm;
+-
+-
+
