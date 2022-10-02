@@ -177,12 +177,12 @@ def main_train(train_dataset, validation_dataset, extra_dataset=None):
     model = desc.make_model(args, train_dataset.unwrapped.vocab)
 
     if args.use_gpu:
-        model.cuda()
+        #model #.cuda()
         # Use the customized data parallel if applicable.
         if args.gpu_parallel:
             from jactorch.parallel import JacDataParallel
             # from jactorch.parallel import UserScatteredJacDataParallel as JacDataParallel
-            model = JacDataParallel(model, device_ids=args.gpus).cuda()
+            model = JacDataParallel(model, device_ids=args.gpus)#.cuda()
         # Disable the cudnn benchmark.
         cudnn.benchmark = False
 
