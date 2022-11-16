@@ -29,6 +29,10 @@
 - RuntimeError: Ninja is required to load C++ extensions; pip3 install Ninja;
 - OSError: CUDA_HOME environment variable is not set. Please set it to your CUDA install root; pytorch pip installation with cuda says: MacOS Binaries dont support CUDA, install from source if CUDA is needed; commented out 180, 185 .cuda();
 - didn't work shutting down 10pm;
--
--
+
+10/02/2022 reimplementing nscl
+---- code set-up and installations ------------
+- resume 1pm
+- tell shell there are no cuda devices export CUDA_VISIBLE_DEVICES="0" 
+
 

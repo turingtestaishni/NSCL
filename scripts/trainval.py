@@ -27,7 +27,6 @@ from jactorch.cli import escape_desc_name, ensure_path, dump_metainfo
 from jactorch.cuda.copy import async_copy_to
 from jactorch.train import TrainerEnv
 from jactorch.utils.meta import as_float
-
 from nscl.datasets import get_available_datasets, initialize_dataset, get_dataset_builder
 
 logger = get_logger(__file__)
@@ -118,11 +117,11 @@ if args.use_gpu:
     assert nr_devs > 0, 'No GPU device available'
     args.gpus = [i for i in range(nr_devs)]
     args.gpu_parallel = (nr_devs > 1)
-
+print("device: ",  cuda.current_device())
+device = cuda.device('cpu')
 desc = load_source(args.desc)
 configs = desc.configs
 args.configs.apply(configs)
-
 
 def main():
     args.dump_dir = ensure_path(osp.join(
@@ -177,12 +176,12 @@ def main_train(train_dataset, validation_dataset, extra_dataset=None):
     model = desc.make_model(args, train_dataset.unwrapped.vocab)
 
     if args.use_gpu:
-        #model #.cuda()
+        model.cuda()
         # Use the customized data parallel if applicable.
         if args.gpu_parallel:
             from jactorch.parallel import JacDataParallel
             # from jactorch.parallel import UserScatteredJacDataParallel as JacDataParallel
-            model = JacDataParallel(model, device_ids=args.gpus)#.cuda()
+            model = JacDataParallel(model, device_ids=args.gpus).cuda()
         # Disable the cudnn benchmark.
         cudnn.benchmark = False
 
